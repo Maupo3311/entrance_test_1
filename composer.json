@@ -42,10 +42,12 @@
             "assets:install %PUBLIC_DIR%": "./bin/console assets:install public"
         },
         "docker-mysql": "docker-compose up --build -d",
+        "migrations": "./bin/console doctrine:migrations:migrate",
         "server-start": "symfony server:start",
         "post-install-cmd": [
             "@auto-scripts",
             "@docker-mysql",
+            "@migrations",
             "@server-start"
         ],
         "post-update-cmd": [
