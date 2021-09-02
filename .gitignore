@@ -16,3 +16,8 @@
 !/public/uploads/.gitignore
 /public/uploads/*
 ###< Upload Files ###
+
+###< Webpack ###
+/node_modules/
+/public/build/
+###> Webpack ###

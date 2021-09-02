@@ -1,0 +1,16 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block content_header %}
+    {% set action = action|default('create')|capitalize %}
+    {{ action }} Book
+{% endblock %}
+
+{% block content_buttons %}
+    <a href="{{ path('book_list') }}" class="btn btn-sm btn-outline-secondary">
+        Cancel
+    </a>
+{% endblock %}
+
+{% block content %}
+    {{ form(form) }}
+{% endblock %}

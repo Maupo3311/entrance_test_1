@@ -1,0 +1,42 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block content_header %}
+    Show Author #{{ author.id }}
+{% endblock %}
+
+{% block content_buttons %}
+    <div class="btn-group mr-2">
+        <a href="{{ path('author_edit', {'id': author.id}) }}" class="btn btn-sm btn-outline-secondary">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <a href="{{ path('author_delete', {'id': author.id}) }}" class="btn btn-sm btn-outline-secondary">
+            <i class="fas fa-trash-alt"></i> Delete
+        </a>
+        <a href="{{ path('author_list') }}" class="btn btn-sm btn-outline-secondary">
+            Cancel
+        </a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="col-12 container">
+        <ul class="list-unstyled row">
+
+            <li class="list-item col-2 border-top py-2"><strong>First Name</strong></li>
+            <li class="list-item col-10 border-top py-2">{{ author.firstName }}</li>
+
+            <li class="list-item col-2 border-top py-2"><strong>Middle Name</strong></li>
+            <li class="list-item col-10 border-top py-2">{{ author.middleName }}</li>
+
+            <li class="list-item col-2 border-top py-2"><strong>Last Name</strong></li>
+            <li class="list-item col-10 border-top py-2">{{ author.lastName }}</li>
+
+            {% for book in author.books %}
+                <li class="list-item col-2 border-top py-2"><strong>{% if loop.index == 1 %}Books{% endif %}</strong></li>
+                <li class="list-item col-10 border-top py-2">
+                    <a href="{{ path('book_show', {'id': book.id}) }}">Book #{{ book.id }} {{ book }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

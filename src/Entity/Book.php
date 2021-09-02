@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
@@ -59,10 +60,16 @@ class Book
     private $authors;
 
     /**
-     * @var string
      * @ORM\Column(type="string", nullable=true)
+     *
+     * @Assert\File(mimeTypes={"image/png", "image/jpeg"})
      */
     private $image;
+
+    /**
+     * @var string
+     */
+    private $tempImage;
 
     /**
      * @return string
@@ -161,26 +168,39 @@ class Book
     }
 
     /**
-     * @param Collection $authors
+     * @param Collection|null $authors
      */
-    public function setAuthors(Collection $authors): void
+    public function setAuthors(?Collection $authors): void
     {
         $this->authors = $authors;
     }
 
     /**
-     * @return string|null
+     * @return mixed
      */
-    public function getImage(): ?string
+    public function getImage()
     {
         return $this->image;
     }
 
     /**
-     * @param string|null $image
+     * @return string|null
      */
-    public function setImage(?string $image): void
+    public function getTempImage(): ?string
     {
+        return $this->tempImage;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        if (is_string($this->image)) {
+            $this->tempImage = $this->image;
+        }
+
         $this->image = $image;
     }
+
 }

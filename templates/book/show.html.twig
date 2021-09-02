@@ -1,0 +1,52 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block content_header %}
+    Show Book #{{ book.id }}
+{% endblock %}
+
+{% block content_buttons %}
+    <div class="btn-group mr-2">
+        <a href="{{ path('book_edit', {'id': book.id}) }}" class="btn btn-sm btn-outline-secondary">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <a href="{{ path('book_delete', {'id': book.id}) }}" class="btn btn-sm btn-outline-secondary">
+            <i class="fas fa-trash-alt"></i> Delete
+        </a>
+        <a href="{{ path('book_list') }}" class="btn btn-sm btn-outline-secondary">
+            Cancel
+        </a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="col-12 container">
+        {% if book.image is not null %}
+            <div class="text-center">
+                <img style="height: 200px" src="{{ asset('uploads/' ~ book.image.filename) }}" class="rounded" alt="Book image">
+            </div>
+            <br>
+        {% endif %}
+
+        <ul class="list-unstyled row">
+
+            <li class="list-item col-2 border-top py-2"><strong>Book title</strong></li>
+            <li class="list-item col-10 border-top py-2">{{ book.name }}</li>
+
+            <li class="list-item col-2 border-top py-2"><strong>The year of publishing</strong></li>
+            <li class="list-item col-10 border-top py-2">{{ book.year }}</li>
+
+            <li class="list-item col-2 border-top py-2"><strong>ISBN</strong></li>
+            <li class="list-item col-10 border-top py-2">{{ book.isbn }}</li>
+
+            <li class="list-item col-2 border-top py-2"><strong>Number of pages</strong></li>
+            <li class="list-item col-10 border-top py-2">{{ book.numberOfPages }}</li>
+
+            {% for author in book.authors %}
+                <li class="list-item col-2 border-top py-2"><strong>{% if loop.index == 1 %}Authors{% endif %}</strong></li>
+                <li class="list-item col-10 border-top py-2">
+                    <a href="{{ path('author_show', {'id': author.id}) }}">Author #{{ author.id }} {{ author }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

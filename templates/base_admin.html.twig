@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin panel{% endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-dark sticky-top flex-md-nowrap p-0 n-bar">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0"><div class="n-header">Panel</div></a>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar l-menu">
+                <div class="sidebar-sticky">
+                    <div class="list-group">
+
+                        {% set author_routes = ['author_list', 'author_create', 'author_show', 'author_edit'] %}
+                        <a href="{{ path('author_list') }}"
+                           class="list-group-item list-group-item-action flex-column align-items-start {% if app.request.get('_route') in author_routes %}active{% endif %}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"><i class="fas fa-user"></i> Authors</h5>
+                            </div>
+                            <p class="mb-1">Information about the authors - first name, last name, middle name.</p>
+                            <small>One author can have many books.</small>
+                        </a>
+
+                        {% set book_routes = ['book_list', 'book_create', 'book_show', 'book_edit'] %}
+                        <a href="{{ path('book_list') }}"
+                           class="list-group-item list-group-item-action flex-column align-items-start {% if app.request.get('_route') in book_routes %}active{% endif %}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"><i class="fas fa-book"></i> Books</h5>
+                            </div>
+                            <p class="mb-1">Information about books - book title, the year of publishing, isbn, number of pages</p>
+                            <small>One book can have many authors.</small>
+                        </a>
+
+                    </div>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 a-content"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <h1 class="h2">{% block content_header %}Dashboard{% endblock %}</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        {% block content_buttons %}{% endblock %}
+                    </div>
+                </div>
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}

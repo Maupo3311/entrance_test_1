@@ -129,9 +129,9 @@ class Author
     }
 
     /**
-     * @param Collection $books
+     * @param Collection|null $books
      */
-    public function setBooks(Collection $books): void
+    public function setBooks(?Collection $books): void
     {
         $this->books = $books;
     }

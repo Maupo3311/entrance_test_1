@@ -2,3 +2,4 @@
 ```bash
 composer install
 ```
+yarn encore dev
