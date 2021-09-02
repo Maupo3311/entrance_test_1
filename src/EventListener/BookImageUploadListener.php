@@ -3,7 +3,7 @@
 namespace App\EventListener;
 
 use App\Entity\Book;
-use App\Service\FileUploaderInterface;
+use App\Service\FileHandlerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -12,15 +12,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BookImageUploadListener
 {
-    /** @var FileUploaderInterface */
-    private $uploader;
+    /** @var FileHandlerInterface */
+    private $fileHandler;
 
     /**
-     * @param FileUploaderInterface $uploader A FileUploader instance.
+     * @param FileHandlerInterface $fileHandler Service for working with files.
      */
-    public function __construct(FileUploaderInterface $uploader)
+    public function __construct(FileHandlerInterface $fileHandler)
     {
-        $this->uploader = $uploader;
+        $this->fileHandler = $fileHandler;
     }
 
     /**
@@ -28,7 +28,7 @@ class BookImageUploadListener
      */
     public function prePersist(LifecycleEventArgs $args): void
     {
-        $this->uploadFile($args->getEntity());
+        $this->uploadFile($args->getEntity())->removeOldFile($args->getEntity());
     }
 
     /**
@@ -36,21 +36,22 @@ class BookImageUploadListener
      */
     public function preUpdate(PreUpdateEventArgs $args): void
     {
-        $this->uploadFile($args->getEntity());
+        $this->uploadFile($args->getEntity())->removeOldFile($args->getEntity());
     }
 
     /**
-     * @param mixed $entity
+     * @param mixed $entity Doctrine entity.
+     * @return $this
      */
-    private function uploadFile($entity): void
+    private function uploadFile($entity): BookImageUploadListener
     {
         if (!$entity instanceof Book) {
-            return;
+            return $this;
         }
 
         $file = $entity->getImage();
         if ($file instanceof UploadedFile) {
-            $fileName = $this->uploader->upload($file);
+            $fileName = $this->fileHandler->upload($file);
             $entity->setImage($fileName);
         } elseif ($file instanceof File) {
             // prevents the full file path being saved on updates
@@ -58,9 +59,23 @@ class BookImageUploadListener
             $entity->setImage($file->getFilename());
         }
 
-        if ($entity->getTempImage() !== null) {
-            $this->uploader->remove($entity->getTempImage());
+        return $this;
+    }
+
+    /**
+     * @param mixed $entity Doctrine entity.
+     * @return void
+     */
+    private function removeOldFile($entity): void
+    {
+        if (!$entity instanceof Book) {
+            return;
         }
+
+        if ($entity->getTempImage() !== null) {
+            $this->fileHandler->remove($entity->getTempImage());
+        }
+
     }
 
     /**
@@ -75,7 +90,7 @@ class BookImageUploadListener
 
         try {
             if ($fileName = $entity->getImage()) {
-                $entity->setImage(new File($this->uploader->getTargetDirectory() . '/' . $fileName));
+                $entity->setImage(new File($this->fileHandler->getTargetDirectory() . '/' . $fileName));
             }
         } catch (FileNotFoundException $e) {
             $entity->setImage(null);

@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-interface FileUploaderInterface
+interface FileHandlerInterface
 {
     /**
      * @param UploadedFile $file Download file.

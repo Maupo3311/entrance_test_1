@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-final class FileUploader implements FileUploaderInterface
+final class FileHandler implements FileHandlerInterface
 {
     /** @var string */
     private $targetDirectory;
