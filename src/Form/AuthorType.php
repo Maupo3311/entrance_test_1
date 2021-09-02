@@ -42,7 +42,8 @@ class AuthorType extends AbstractType
             ->add('books', EntityType::class, [
                 'class'    => Book::class,
                 'multiple' => true,
-                'attr'  => [
+                'required' => false,
+                'attr'     => [
                     'class' => 'form-control',
                 ],
             ])

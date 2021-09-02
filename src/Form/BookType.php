@@ -34,8 +34,8 @@ class BookType extends AbstractType
             ->add('year', IntegerType::class, [
                 'label' => 'The year of publishing',
                 'attr'  => [
-                    'max' => (new DateTime('now'))->format('Y'),
-                    'min' => 500,
+                    'max'   => (new DateTime('now'))->format('Y'),
+                    'min'   => 500,
                     'class' => 'form-control',
                 ],
             ])
@@ -54,7 +54,8 @@ class BookType extends AbstractType
             ->add('authors', EntityType::class, [
                 'class'    => Author::class,
                 'multiple' => true,
-                'attr'  => [
+                'required' => false,
+                'attr'     => [
                     'class' => 'form-control',
                 ],
             ])
@@ -71,7 +72,7 @@ class BookType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid image',
                     ])
                 ],
-                'attr'  => [
+                'attr'        => [
                     'class' => 'form-control',
                 ],
             ])
