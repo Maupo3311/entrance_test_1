@@ -50,7 +50,7 @@
         "webpack": {
             "npm:install": "npm install",
             "yarn:install": "yarn install",
-            "yarn:encore:dev": "yarn encore dev",
+            "yarn:encore:dev": "yarn encore dev"
         },
         "post-install-cmd": [
             "@auto-scripts",
